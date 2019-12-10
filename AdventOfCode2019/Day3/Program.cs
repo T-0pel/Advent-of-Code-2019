@@ -6,18 +6,26 @@ using System.Numerics;
 
 namespace Day3
 {
-    class Program
+    internal class Program
     {
-        private static HashSet<Vector2> PositionsWire1 = new HashSet<Vector2>();
-        private static HashSet<Vector2> PositionsWire2 = new HashSet<Vector2>();
+        private static readonly HashSet<Vector2> PositionsWire1 = new HashSet<Vector2>();
+        private static readonly HashSet<Vector2> PositionsWire2 = new HashSet<Vector2>();
 
-        private static HashSet<Point> Points1 = new HashSet<Point>();
-        private static HashSet<Point> Points2 = new HashSet<Point>();
+        // These should have been dictionaries, using point with HashSet was an unnecessary complication
+        private static readonly HashSet<Point> Points1 = new HashSet<Point>();
+        private static readonly HashSet<Point> Points2 = new HashSet<Point>();
 
         private const string DirectoryName = "Day3";
 
-        static void Main(string[] args)
+        private static void Main()
         {
+            //Console.WriteLine($"{("4", 5) == ("5", 4)}");
+            //Console.WriteLine($"{("4", 5) == ("4", 5)}");
+
+            //Console.WriteLine($"{(new Exception(), 0) == (new Exception(), 0)}");
+            //var exception = new Exception();
+            //Console.WriteLine($"{(exception, 0) == (exception, 0)}");
+
             //Part2();
             OptimizedSolution.Solve(FileHelper.GetLines(DirectoryName).ToList());
         }
@@ -52,26 +60,18 @@ namespace Day3
                 var direction = instruction[0];
                 var count = int.Parse(instruction.Substring(1));
 
-                for (int i = 1; i <= count; i++)
+                for (var i = 1; i <= count; i++)
                 {
                     stepCount++;
-                    Vector2 newPosition = default;
 
-                    switch (direction)
+                    var newPosition = direction switch
                     {
-                        case 'R':
-                            newPosition = new Vector2(currentPosition.X + i, currentPosition.Y);
-                            break;
-                        case 'U':
-                            newPosition = new Vector2(currentPosition.X, currentPosition.Y + i);
-                            break;
-                        case 'L':
-                            newPosition = new Vector2(currentPosition.X - i, currentPosition.Y);
-                            break;
-                        case 'D':
-                            newPosition = new Vector2(currentPosition.X, currentPosition.Y - i);
-                            break;
-                    }
+                        'R' => new Vector2(currentPosition.X + i, currentPosition.Y),
+                        'U' => new Vector2(currentPosition.X, currentPosition.Y + i),
+                        'L' => new Vector2(currentPosition.X - i, currentPosition.Y),
+                        'D' => new Vector2(currentPosition.X, currentPosition.Y - i),
+                        _ => default
+                    };
 
                     positions.Add(new Point { Position = newPosition, StepCount = stepCount });
                     if (i == count) currentPosition = newPosition;
@@ -102,25 +102,16 @@ namespace Day3
                 var direction = instruction[0];
                 var count = int.Parse(instruction.Substring(1));
 
-                for (int i = 1; i <= count; i++)
+                for (var i = 1; i <= count; i++)
                 {
-                    Vector2 newPosition = default;
-
-                    switch (direction)
+                    var newPosition = direction switch
                     {
-                        case 'R':
-                            newPosition = new Vector2(currentPosition.X + i, currentPosition.Y);
-                            break;
-                        case 'U':
-                            newPosition = new Vector2(currentPosition.X, currentPosition.Y + i);
-                            break;
-                        case 'L':
-                            newPosition = new Vector2(currentPosition.X - i, currentPosition.Y);
-                            break;
-                        case 'D':
-                            newPosition = new Vector2(currentPosition.X, currentPosition.Y - i);
-                            break;
-                    }
+                        'R' => new Vector2(currentPosition.X + i, currentPosition.Y),
+                        'U' => new Vector2(currentPosition.X, currentPosition.Y + i),
+                        'L' => new Vector2(currentPosition.X - i, currentPosition.Y),
+                        'D' => new Vector2(currentPosition.X, currentPosition.Y - i),
+                        _ => default
+                    };
 
                     positions.Add(newPosition);
                     if (i == count) currentPosition = newPosition;
