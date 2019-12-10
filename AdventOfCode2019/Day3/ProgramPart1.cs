@@ -18,7 +18,8 @@ namespace Day3
 
         static void Main(string[] args)
         {
-            Part2();
+            //Part2();
+            OptimizedSolution.Solve(FileHelper.GetLines(DirectoryName).ToList());
         }
 
         private static void Part2()
